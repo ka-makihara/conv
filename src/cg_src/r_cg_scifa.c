@@ -50,6 +50,7 @@ uint8_t *       gp_scifa0_rx_address;   /* SCIFA0 receive buffer address */
 uint16_t        g_scifa0_rx_count;      /* SCIFA0 receive data number */
 uint16_t        g_scifa0_rx_length;     /* SCIFA0 receive data length */
 /* Start user code for global. Do not edit comment generated here */
+int	__txComp;
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************

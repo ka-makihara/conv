@@ -51,6 +51,7 @@ extern uint16_t        g_scifa0_rx_count;      /* SCIFA0 receive data number */
 extern uint16_t        g_scifa0_rx_length;     /* SCIFA0 receive data length */
 /* Start user code for global. Do not edit comment generated here */
 
+extern	int __txComp;
 unsigned long trCnt = 0;
 unsigned long txCnt = 0;
 /* End user code. Do not edit comment generated here */
@@ -241,6 +242,7 @@ void r_scifa0_callback_transmitend(void)
     /* Start user code. Do not edit comment generated here */
 	PORT2.PODR.BIT.B1 = 0;
 	trCnt++;
+	__txComp = 1;
     /* End user code. Do not edit comment generated here */
 }
 /***********************************************************************************************************************

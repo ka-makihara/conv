@@ -69,6 +69,8 @@ extern void init_quail(void);
 extern void recv_quail();
 extern void waitMs(int ms);
 
+extern int32_t endat_main(void);
+
 uint16_t	__spi_recv[2]={0};
 uint16_t	__spi_data[2];
 /* End user code. Do not edit comment generated here */
@@ -130,17 +132,9 @@ void R_MAIN_UserInit(void)
 	//wm_rp_04s_init();					/* WM-RP-04S�ｿｽ�ｿｽ�ｿｽ�ｿｽ �ｿｽ�ｿｽ�ｿｽ�ｿｽ�ｿｽ�ｿｽ */
 
 	//wm_rp_04s_connect();		/* �ｿｽ�ｿｽ�ｿｽ�ｿｽ�ｿｽﾚ托ｿｽ */
-	PORT2.PODR.BIT.B1 = 1;
 	waitMs(1);
-	init_quail();
-
-	//sys_wait(8000);
-	//PORT2.PODR.BIT.B1 = 0;
-
-//	recv_quail();
-
-	//R_SCIFA0_Serial_Send(">",1);
-	//R_SCIFA1_Serial_Send(">",1);
+	//init_quail();
+	endat_main();
 
     /* End user code. Do not edit comment generated here */
 }

@@ -219,10 +219,14 @@
 									<listOptionValue builtIn="false" value="&quot;.\src/cg_src\r_cg_scifa.o&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;.\src/cg_src\r_cg_scifa_user.o&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;.\src/cg_src\r_cg_systeminit.o&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/WmPrLib/Debug/libWmPrLib.a}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/cg_src\r_cg_cmt.o&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/cg_src\r_cg_cmt_user.o&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src\endat_main.o&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src\quail.o&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/lib/ecl/r_ecl_rzt1.a}&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.renesas.cdt.core.Linker.option.additionalInputFiles.1991287783" name="追加入力ファイル" superClass="com.renesas.cdt.core.Linker.option.additionalInputFiles" valueType="userObjs">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/WmPrLib/Debug/libWmPrLib.a}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/lib/ecl/r_ecl_rzt1.a}&quot;"/>
 								</option>
 							</tool>
 							<tool id="com.renesas.cdt.rz.hardwaredebug.win32.tool.objcopy.Id.295240539" name="Objcopy" superClass="com.renesas.cdt.rz.hardwaredebug.win32.tool.objcopy.Id"/>
