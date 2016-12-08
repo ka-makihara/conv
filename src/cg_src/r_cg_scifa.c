@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file implements device driver for SCIF module.
-* Creation Date: 2016/12/07
+* Creation Date: 2016/12/08
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -38,6 +38,7 @@ Includes
 #include "r_cg_macrodriver.h"
 #include "r_cg_scifa.h"
 /* Start user code for include. Do not edit comment generated here */
+#define	SCIF_RX_BUFF_LEN	1024
 /* End user code. Do not edit comment generated here */
 #include "r_cg_userdefine.h"
 
@@ -51,6 +52,14 @@ uint16_t        g_scifa0_rx_count;      /* SCIFA0 receive data number */
 uint16_t        g_scifa0_rx_length;     /* SCIFA0 receive data length */
 /* Start user code for global. Do not edit comment generated here */
 int	__txComp;
+int __rxComp;
+
+uint8_t		g_scif0_rx_buf[SCIF_RX_BUFF_LEN];
+
+extern void sys_wait(int tm);
+extern void waitMs(int ms);
+extern void r_scifa0_rxif0_interrupt_2(void);
+
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
@@ -262,46 +271,4 @@ MD_STATUS R_SCIFA0_Serial_Send(const uint8_t * tx_buf, uint16_t tx_num)
 }
 
 /* Start user code for adding. Do not edit comment generated here */
-
-/*******************************************************************************
-* Function Name: IoGetchar
-* Description  : One character is received from SCIFA2, and it's data is returned.
-*              : This function keeps waiting until it can obtain the receiving data.
-* Arguments    : none
-* Return Value : Character to receive (Byte).
-*******************************************************************************/
-uint8_t IoGetchar (void)
-{
-    int32_t    data;
-    uint8_t    data_char;
-    int32_t    ans;
-
-    //ans = R_SCIFA2_Serial_Receive(&data_char,1);
-
-    return data_char;
-}
-
-/*******************************************************************************
-* Function Name: IoPutchar
-* Description  : Character "buffer" is output to SCIFA2.
-*              : This function keeps waiting until it becomes the transmission
-*              : enabled state.
-* Arguments    : int_t buffer : character to output
-* Return Value : None
-*******************************************************************************/
-void IoPutchar (uint8_t *buffer)
-{
-	//R_SCIFA2_Serial_Send(buffer,1);
-}
-
-
-void scif_loop(void)
-{
-    uint8_t ans;
-
-    ans = IoGetchar();
-    if(ans >= 0){
-        IoPutchar(ans);
-    }
-}
 /* End user code. Do not edit comment generated here */

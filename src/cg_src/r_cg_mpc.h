@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : Header file of mpc file.
-* Creation Date: 2016/12/07
+* Creation Date: 2016/12/08
 ***********************************************************************************************************************/
 #ifndef _MPC_H
 #define _MPC_H

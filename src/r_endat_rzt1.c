@@ -988,6 +988,7 @@ static r_endat_err_t endat_enc_init_dwl_check(uint8_t ch,
     reg_val = ENDAT(pendat_base_addr_tbl[ch]).STAT.LONG & ENDAT_STAT_ERR;
     if (ENDAT_STAT_NORMAL_CHECK != reg_val)
     {
+    	ENDAT(pendat_base_addr_tbl[ch]).STAT.LONG = (reg_val ^ ENDAT_STAT_NORMAL_CHECK);
         goto error_drv;
     }
     

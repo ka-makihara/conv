@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file implements main function.
-* Creation Date: 2016/12/07
+* Creation Date: 2016/12/08
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -133,7 +133,7 @@ void R_MAIN_UserInit(void)
 
 	//wm_rp_04s_connect();		/* �ｿｽ�ｿｽ�ｿｽ�ｿｽ�ｿｽﾚ托ｿｽ */
 	waitMs(1);
-	//init_quail();
+	init_quail();
 	endat_main();
 
     /* End user code. Do not edit comment generated here */

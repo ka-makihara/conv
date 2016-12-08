@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file implements device driver for RSPI module.
-* Creation Date: 2016/12/07
+* Creation Date: 2016/12/08
 ***********************************************************************************************************************/
 #ifndef RSPI_H
 #define RSPI_H

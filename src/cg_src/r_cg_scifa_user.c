@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file implements device driver for SCIF module.
-* Creation Date: 2016/12/07
+* Creation Date: 2016/12/08
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -51,7 +51,11 @@ extern uint16_t        g_scifa0_rx_count;      /* SCIFA0 receive data number */
 extern uint16_t        g_scifa0_rx_length;     /* SCIFA0 receive data length */
 /* Start user code for global. Do not edit comment generated here */
 
+extern uint8_t		g_scif0_rx_buf[];
+
 extern	int __txComp;
+extern	int __rxComp;
+
 unsigned long trCnt = 0;
 unsigned long txCnt = 0;
 /* End user code. Do not edit comment generated here */
@@ -254,6 +258,8 @@ void r_scifa0_callback_transmitend(void)
 void r_scifa0_callback_receiveend(void)
 {
     /* Start user code. Do not edit comment generated here */
+    __rxComp = 1;
+
     /* End user code. Do not edit comment generated here */
 }
 /***********************************************************************************************************************
@@ -270,4 +276,67 @@ void r_scifa0_callback_error(scif_error_type_t error_type)
 }
 
 /* Start user code for adding. Do not edit comment generated here */
+
+unsigned int get_recv_size(void)
+{
+    int sz = (g_scif0_rx_buf[1] << 8);
+    sz += g_scif0_rx_buf[2];
+
+    return sz;
+}
+
+void r_scifa0_rxif0_interrupt_2(void)
+{
+    uint16_t count = 0;
+
+    /* Get the amount of receive data stored in FRDR register */
+    uint16_t dummy_fdr = SCIFA0.FDR.BIT.R;
+
+    /* Read data from the receive FIFO data register */
+    while ((g_scifa0_rx_length > g_scifa0_rx_count) && (count < dummy_fdr)){
+        *gp_scifa0_rx_address = SCIFA0.FRDR;
+        gp_scifa0_rx_address++;
+        g_scifa0_rx_count++;
+        count++;
+
+        if( g_scifa0_rx_count > 2 ){
+        	//3�ｾ奇ｾ橸ｽｲ�ｾ�逶ｮ縺ｾ縺ｧ蜿嶺ｿ｡縺励◆繧�(==�ｾ�ｾ橸ｽｰ�ｾ��ｽｻ�ｽｲ�ｽｽ�ｾ樣Κ縺ｾ縺ｧ蜿嶺ｿ｡)
+        	unsigned short sz = (g_scif0_rx_buf[1] << 8);
+        	sz += g_scif0_rx_buf[2];
+
+        	//譛ｬ蠖薙↓蠢�隕√↑蜿嶺ｿ｡�ｾ奇ｾ橸ｽｲ�ｾ�謨ｰ繧定ｨｭ螳壹＠逶ｴ縺�
+        	//騾∽ｿ｡縺輔ｌ縺ｦ縺上ｋ�ｾ奇ｾ滂ｽｹ�ｽｯ�ｾ�縺ｮ�ｽｻ�ｽｲ�ｽｽ�ｾ�(sz) - 3(譌｢縺ｫ蜿嶺ｿ｡貂医∩縺ｮ�ｾ奇ｾ橸ｽｲ�ｾ�謨ｰ)
+        	g_scifa0_rx_length = sz - 3;
+		}
+    }
+
+    /* If remaining data is less than the receive trigger number, receive interrupt will not occur.
+       In this case, set trigger number to 1 to force receive interrupt for each one byte of data in FRDR */
+    if ((g_scifa0_rx_length - g_scifa0_rx_count < _SCIF_RX_TRIG_NUM_0) && (SCIFA0.FTCR.BIT.RFTC != 1U)){
+        SCIFA0.FTCR.BIT.RFTC = 1U;
+    }
+
+    /* Clear receive FIFO data full flag */
+    if (SCIFA0.FSR.BIT.RDF == 1U){
+        SCIFA0.FSR.BIT.RDF = 0U;
+    }
+
+    if (g_scifa0_rx_length <= g_scifa0_rx_count){
+        /* All data received */
+        SCIFA0.SCR.BIT.RE = 0U;
+        r_scifa0_callback_receiveend();
+    }
+
+    /* Wait the interrupt signal is disabled */
+    while (0U != (VIC.IRQS3.LONG & 0x00000002UL)){
+        VIC.IEC3.LONG = 0x00000002UL;
+    }
+
+    VIC.IEN3.LONG |= 0x00000002UL;
+
+    /* Dummy write */
+    VIC.HVA0.LONG = 0x00000000UL;
+    asm("dmb");
+}
+
 /* End user code. Do not edit comment generated here */

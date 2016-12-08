@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file implements device driver for SCIF module.
-* Creation Date: 2016/12/07
+* Creation Date: 2016/12/08
 ***********************************************************************************************************************/
 #ifndef SCIF_H
 #define SCIF_H
@@ -266,5 +266,6 @@ void r_scifa0_callback_receiveend(void);
 void r_scifa0_callback_error(scif_error_type_t error_type);
 
 /* Start user code for function. Do not edit comment generated here */
+extern int R_SCIFA0_Serial_SendRecv(uint8_t * tx_buf, uint16_t tx_num, uint8_t* rx_buf);
 /* End user code. Do not edit comment generated here */
 #endif
