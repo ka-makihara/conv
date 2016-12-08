@@ -18,6 +18,19 @@ extern "C" {
 #define	CMD_SEND_BIN	4
 #define	CMD_SEND_TEXT	5
 
+typedef unsigned char u_char;
+
+int get_checksum(unsigned char* data, int sz)
+{
+	unsigned char *p = data;
+	int sum = p[0];
+
+	for(int i = 1; i < sz; i++){
+		sum = sum ^ p[i];
+	}
+	return sum;
+}
+
 template <unsigned Size> struct QuailData{
 	unsigned char start_code_;
 	union{
@@ -40,17 +53,7 @@ template <unsigned Size> struct QuailData{
 	unsigned char endCode_;
 
 	int get_size(void){ return( sizeof(QuailData<Size>)); }
-	int set_checksum()
-	{
-		unsigned char *p = (unsigned char*)this;
-		int i ;
-		int sum = p[0];
-		for(i = 1; i < get_size() - 2; i++){
-			sum = sum ^ p[i];
-		}
-		checkSum_ = sum;
-		return sum;
-	}
+	void set_checksum(){ checkSum_ = get_checksum((unsigned char*)this, get_size()-2);}
 	void init()
 	{
 		start_code_ = 0xAA;
@@ -89,6 +92,82 @@ template <unsigned Size> struct QuailData{
 	}
 } __attribute__ ((packed));
 
+struct Quail{
+	unsigned char start_code_;
+	union{
+		unsigned short size_;
+		struct{
+			unsigned char size_high_;
+			unsigned char size_low_;
+		};
+	} DATA_SIZE;
+	unsigned char txGrpID_;
+	unsigned char txAxisID_;
+	unsigned char rxGrpID_;
+	unsigned char rxAxisID_;
+	unsigned char rightGrpID_;
+	unsigned char rightAxisID_;
+	unsigned char msgID_;
+	unsigned char cmdID_;
+	//本来のﾒﾝﾊﾞｰ	
+	//unsigned char cmd_data_[Size];
+	//unsigned char checkSum_;
+	//unsigned char endCode_;
+} __attribute__ ((packed));
+
+void init_quail_data(Quail *pData)
+{
+	pData->start_code_ = 0xAA;
+	pData->endCode_ = 0x55;
+	pData->txGrpID_ = 0;
+	pData->rxGrpID_ = 0;
+	pData->rightGrpID_ = 0;
+	pData->rxAxisID_ = 0xfe;
+}
+
+void set_token_ID(Quail *pQuail, unsigned char rxID, unsigned char txID, unsigned char rID)
+{
+	//ｸﾞﾙｰﾌﾞIDは未対応のため全て0とする
+	pQuail->txGrpID_ = 0;
+	pQuail->rxGrpID_ = 0;
+	pQuail->rightGrpID_ = 0;
+
+	pQuail->txAxisID_ = txID;
+	pQuail->rxAxisID_ = rxID;
+	pQuail->rightAxisID_ = rID;
+}
+
+int setup_quail_command(Quail *pQuail,u_char *buff, u_char no, u_char type, u_char *cmd)
+{
+	u_char *pBase = (u_char*)pQuail;
+	int idx = 0;
+	int cmdLen;
+
+	pQuail->msgID_ = no;
+	pQuail->msgID_ = type;
+	//実ﾃﾞｰﾀ部までをｺﾋﾟｰ
+	for(idx = 0; idx < sizeof(Quail); idx++){
+		buff[idx] = pBase[idx]; 
+	}
+	//ｺﾏﾝﾄﾞ部
+	for(cmdLen = 0; cmd[cmdLen]; cmdLen++){
+		buff[idx++] = cmd[cmdLen];
+	}
+	buff[idx++] = 0x0D;	//CR
+	buff[idx++] = 0x0A;	//LF
+	buff[idx++] = 0x00;	//NULL
+
+	dataSize = sizeof(Quail) + cmdLen + 5;	//CR + LF + NULL + CheckSum + 終端(0x55)
+
+	((Quail*)buff)->DATA_SIZE.size_high_ = (dataSize & 0xFF00) >> 8;
+	((Quail*)buff)->DATA_SIZE.size_low_  = (dataSize & 0x00FF);
+
+	buff[idx++] = get_checksum(buff,idx-1);
+	buff[idx++] = 0x55;	//終端
+
+	return( idx-1 );
+}
+
 QuailData<2>	__recv;
 QuailData<2>	__recv2;
 QuailData<2>	__quail2;
@@ -118,8 +197,15 @@ extern void move_test();
 
 extern "C" void init_quail(void)
 {
-	unsigned char cmd[2]={0,0};
-	unsigned char	tmp[300];
+	u_char cmd[2]={0,0};
+	u_char	recv_tmp[300];
+	u_char	send_cmd[300];
+	int packetSz;
+
+	packetSz = setup_quail_cmd(Quail(),send_cmd,0xD7,CMD_IDSET,cmd);
+	packetSz = setup_quail_cmd(Quail(),send_cmd,0xD7,CMD_TEXT,"MON.0");
+
+int setup_quail_command(Quail *pQuail, u_char* buff, u_char no, u_char type, u_char *cmd )
 
 	__quail2.init();
 
