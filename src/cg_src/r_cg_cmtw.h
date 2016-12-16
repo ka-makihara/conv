@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file implements device driver for CMTW module.
-* Creation Date: 2016/12/08
+* Creation Date: 2016/12/16
 ***********************************************************************************************************************/
 #ifndef CMTW_H
 #define CMTW_H
@@ -172,13 +172,7 @@ Macro definitions (Register bit)
 Macro definitions
 ***********************************************************************************************************************/
 /* Compare Match Constant Register (CMWCOR) */
-#define _CMTW0_CMWCOR_VALUE                  (0x00023C33UL)
-/* Output Compare Registers 0 (CMWOCR0) */
-#define _CMTW0_CMWOCR0_VALUE                 (0x0000000AUL)
-/* Output Compare Registers 1 (CMWOCR1) */
-#define _CMTW0_CMWOCR1_VALUE                 (0x0000000AUL)
-/* Compare Match Constant Register (CMWCOR) */
-#define _CMTW1_CMWCOR_VALUE                  (0x00000091UL)
+#define _CMTW1_CMWCOR_VALUE                  (0x0000249EUL)
 /* Output Compare Registers 0 (CMWOCR0) */
 #define _CMTW1_CMWOCR0_VALUE                 (0x0000000AUL)
 /* Output Compare Registers 1 (CMWOCR1) */
@@ -191,9 +185,6 @@ Typedef definitions
 /***********************************************************************************************************************
 Global functions
 ***********************************************************************************************************************/
-void R_CMTW0_Create(void);
-void R_CMTW0_Start(void);
-void R_CMTW0_Stop(void);
 void R_CMTW1_Create(void);
 void R_CMTW1_Start(void);
 void R_CMTW1_Stop(void);

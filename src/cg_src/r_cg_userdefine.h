@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file includes user definition.
-* Creation Date: 2016/12/08
+* Creation Date: 2016/12/16
 ***********************************************************************************************************************/
 #ifndef _USER_DEF_H
 #define _USER_DEF_H

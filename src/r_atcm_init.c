@@ -74,6 +74,7 @@ Private variables and functions
 
 
 
+#if 0
 /*******************************************************************************
 * Function Name : R_ATCM_WaitSet
 * Description   : Sets ATCM access wait.           
@@ -101,6 +102,7 @@ void R_ATCM_WaitSet(uint32_t atcm_wait)
 /*******************************************************************************
  End of function R_ATCM_WaitSet
 *******************************************************************************/
+#endif
 
 /* End of File */
 

@@ -1,6 +1,6 @@
 /***************************************************************/
 /*                                                             */
-/*      PROJECT NAME :  App_Test                               */
+/*      PROJECT NAME :  RTOS_RZT1                              */
 /*      FILE         :  vector.asm                             */
 /*      DESCRIPTION  :  Interrupt Handlers                     */
 /*      CPU SERIES   :  RZ/T                                   */

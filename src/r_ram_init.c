@@ -96,7 +96,7 @@ void R_RAM_ECC_Enable(void)
  End of function R_RAM_ECC_Enable
 *******************************************************************************/
 
-
+#if 0
 /*******************************************************************************
 * Function Name : R_RAM_WriteEnable
 * Description   : Enable writing to the protected registers related to RAM.
@@ -141,7 +141,7 @@ void R_RAM_WriteDisable(void)
 /*******************************************************************************
  End of function R_RAM_WriteDisable
 *******************************************************************************/
-
+#endif
 /* End of File */
 
 

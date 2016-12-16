@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file implements device driver for CMTW module.
-* Creation Date: 2016/12/08
+* Creation Date: 2016/12/16
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -47,85 +47,6 @@ Global variables and functions
 /* Start user code for global. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
 
-/***********************************************************************************************************************
-* Function Name: R_CMTW0_Create
-* Description  : This function initializes the CMWT0 channel.
-* Arguments    : None
-* Return Value : None
-***********************************************************************************************************************/
-void R_CMTW0_Create(void)
-{
-    /* Cancel CMTW stop state in LPC */
-    MSTP(CMTW0) = 0U;
-
-    /* Disable CMWI0 interrupt */
-    VIC.IEC0.LONG = 0x02000000UL;
-
-    /* Set CMWI0 edge detection type */
-    VIC.PLS0.LONG |= 0x02000000UL;
-
-    /* Stop CMTW0 count */
-    CMTW0.CMWSTR.BIT.STR = 0U;
-
-    /* Set timer I/O control register */
-    CMTW0.CMWIOR.WORD = _CMTW_CMWIOR_IC0E_ENABLE | _CMTW_CMWIOR_IC0_RISE | _CMTW_CMWIOR_IC1E_ENABLE | 
-                        _CMTW_CMWIOR_IC1_RISE | _CMTW_CMWIOR_OC0E_ENABLE | _CMTW_CMWIOR_OC0_RETAIN | 
-                        _CMTW_CMWIOR_OC1E_ENABLE | _CMTW_CMWIOR_OC1_RETAIN | _CMTW_CMWIOR_CMWE_ENABLE;
-
-    /* Set compare match register */
-    CMTW0.CMWCOR = _CMTW0_CMWCOR_VALUE;
-
-    /* Set output compare register 0 */
-    CMTW0.CMWOCR0 = _CMTW0_CMWOCR0_VALUE;
-
-    /* Set output compare register 1 */
-    CMTW0.CMWOCR1 = _CMTW0_CMWOCR1_VALUE;
-
-    /* Set digital noise filter control register */
-    CMTW.NFCR0.LONG = _CMTW_NFCR0_NF0EN_DISABLE | _CMTW_NFCR0_NF1EN_DISABLE;
-
-    /* Set ECM Dynamic Mode Error Output Select Register */
-    CMTW.ECDMESLR.LONG = _CMTW_ECDMESLR_DMERSL_NOTUSED;
-
-    /* Set control register */
-    CMTW0.CMWCR.WORD = _CMTW_CMWCR_CLOCK_PCLKD512 | _CMTW_CMWCR_CMWIE_ENABLE | _CMTW_CMWCR_COUNTER_SIZE_32 | 
-                       _CMTW_CMWCR_CCLR_ENABLE_CMWCOR;
-
-    /* Set CMWI0 interrupt priority level */
-    VIC.PRL25.LONG = _CMTW_PRIORITY_LEVEL0;
-
-    /* Set CMWI0 interrupt address level */
-    VIC.VAD25.LONG = (uint32_t)r_cmtw_cmwi0_interrupt;
-}
-/***********************************************************************************************************************
-* Function Name: R_CMTW0_Start
-* Description  : This function starts the CMTW0 channel counter.
-* Arguments    : None
-* Return Value : None
-***********************************************************************************************************************/
-void R_CMTW0_Start(void)
-{
-    /* Enable CMWI0 interrupt*/
-    VIC.IEN0.LONG |= 0x02000000UL;
-
-    /* Start CMTW0 count */
-    CMTW0.CMWSTR.BIT.STR = 1U;
-}
-/***********************************************************************************************************************
-* Function Name: R_CMTW0_Stop
-* Description  : This function stops the CMTW0 channel counter.
-* Arguments    : None
-* Return Value : None
-***********************************************************************************************************************/
-void R_CMTW0_Stop(void)
-{
-    /* Stop CMTW0 count */
-    CMTW0.CMWSTR.BIT.STR = 0U;
-
-    /* Disable CMWI0 interrupt */
-    VIC.IEC0.LONG = 0x02000000UL;
-
-}
 /***********************************************************************************************************************
 * Function Name: R_CMTW1_Create
 * Description  : This function initializes the CMWT1 channel.
@@ -191,7 +112,7 @@ void R_CMTW1_Create(void)
     CMTW.ECDMESLR.LONG = _CMTW_ECDMESLR_DMERSL_NOTUSED;
 
     /* Set control register */
-    CMTW1.CMWCR.WORD = _CMTW_CMWCR_CLOCK_PCLKD512 | _CMTW_CMWCR_CMWIE_ENABLE | _CMTW_CMWCR_IC0IE_ENABLE | 
+    CMTW1.CMWCR.WORD = _CMTW_CMWCR_CLOCK_PCLKD8 | _CMTW_CMWCR_CMWIE_ENABLE | _CMTW_CMWCR_IC0IE_ENABLE | 
                        _CMTW_CMWCR_IC1IE_ENABLE | _CMTW_CMWCR_OC0IE_ENABLE | _CMTW_CMWCR_OC1IE_ENABLE | 
                        _CMTW_CMWCR_COUNTER_SIZE_32 | _CMTW_CMWCR_CCLR_ENABLE_CMWCOR;
 

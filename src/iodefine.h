@@ -1,6 +1,6 @@
 /***************************************************************/
 /*                                                             */
-/*      PROJECT NAME :  App_Test                               */
+/*      PROJECT NAME :  RTOS_RZT1                              */
 /*      FILE         :  iodefine.h                             */
 /*      DESCRIPTION  :  Io Define                              */
 /*      CPU SERIES   :  RZ/T                                   */

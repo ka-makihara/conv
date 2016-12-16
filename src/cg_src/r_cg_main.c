@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file implements main function.
-* Creation Date: 2016/12/08
+* Creation Date: 2016/12/16
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -37,12 +37,18 @@ Includes
 ***********************************************************************************************************************/
 #include "r_cg_macrodriver.h"
 #include "r_cg_cgc.h"
+#include "r_cg_icu.h"
 #include "r_cg_port.h"
 #include "r_cg_cmt.h"
 #include "r_cg_cmtw.h"
 #include "r_cg_scifa.h"
 #include "r_cg_rspi.h"
 /* Start user code for include. Do not edit comment generated here */
+/* Scheduler include files. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
+#include "rtos.h"
 /* End user code. Do not edit comment generated here */
 #include "r_cg_userdefine.h"
 
@@ -50,12 +56,11 @@ Includes
 Global variables and functions
 ***********************************************************************************************************************/
 /* Start user code for global. Do not edit comment generated here */
-extern void wm_rp_04s_init(void);
-
-void rsi_delayMs (uint16_t delay)
-{
-
-}
+extern void main_blinky( void );
+extern void init_quail();
+//extern void RTOS_Start(void);
+extern void create_quail_task(void);
+extern int32_t endat_main(void);
 
 void sys_wait(int tm)
 {
@@ -65,14 +70,10 @@ void sys_wait(int tm)
 		asm("nop");
 	}
 }
-extern void init_quail(void);
-extern void recv_quail();
-extern void waitMs(int ms);
 
-extern int32_t endat_main(void);
+uint32_t	__spi_recv[2]={0};
+uint32_t	__spi_data[2];
 
-uint16_t	__spi_recv[2]={0};
-uint16_t	__spi_data[2];
 /* End user code. Do not edit comment generated here */
 
 extern void R_Systeminit(void);
@@ -90,18 +91,9 @@ void main(void)
     R_MAIN_UserInit();
 
     /* Start user code. Do not edit comment generated here */
+    rtos_start();
     while (1U)
     {
-    	waitMs(1000);
-    	PORTN.PODR.BIT.B6 ^= 1;
-/*
-    	 int32_t ans;
-
-    	 ans = IoGetchar();
-    	 if(ans >= 0){
-    	     IoPutchar(ans);
-    	 }
-*/
         ;
     }
     /* End user code. Do not edit comment generated here */
@@ -115,29 +107,102 @@ void main(void)
 void R_MAIN_UserInit(void)
 {
     /* Start user code. Do not edit comment generated here */
-	int i;
-
-	R_CMTW0_Start();
 	R_CMTW1_Start();
-
 	R_SCIFA0_Start();
+	R_SCIFA1_Start();
+	R_SCIFA2_Start();
+
+	R_RSPI0_Start();
+	R_RSPI1_Start();
+	R_RSPI2_Start();
 
 	__spi_data[0] = 0x15;
 	__spi_data[1] = 0;
 	__spi_recv[0] = 0xff;
 	__spi_recv[1] = 0xaa;
-	R_RSPI1_Start();
 	R_RSPI1_Send_Receive((uint32_t*)__spi_data,2,(uint32_t*)&__spi_recv);
 
-	//wm_rp_04s_init();					/* WM-RP-04S�ｿｽ�ｿｽ�ｿｽ�ｿｽ �ｿｽ�ｿｽ�ｿｽ�ｿｽ�ｿｽ�ｿｽ */
-
-	//wm_rp_04s_connect();		/* �ｿｽ�ｿｽ�ｿｽ�ｿｽ�ｿｽﾚ托ｿｽ */
-	waitMs(1);
 	init_quail();
 	endat_main();
+	create_quail_task();
+
+	//sem_test();
 
     /* End user code. Do not edit comment generated here */
 }
 
 /* Start user code for adding. Do not edit comment generated here */
+
+void vApplicationMallocFailedHook( void )
+{
+	/* Called if a call to pvPortMalloc() fails because there is insufficient
+	free memory available in the FreeRTOS heap.  pvPortMalloc() is called
+	internally by FreeRTOS API functions that create tasks, queues, software
+	timers, and semaphores.  The size of the FreeRTOS heap is set by the
+	configTOTAL_HEAP_SIZE configuration constant in FreeRTOSConfig.h. */
+
+	/* Force an assert. */
+	configASSERT( ( volatile void * ) NULL );
+}
+/*-----------------------------------------------------------*/
+
+void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName )
+{
+	( void ) pcTaskName;
+	( void ) pxTask;
+
+	/* Run time stack overflow checking is performed if
+	configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2.  This hook
+	function is called if a stack overflow is detected. */
+
+	/* Force an assert. */
+	configASSERT( ( volatile void * ) NULL );
+}
+/*-----------------------------------------------------------*/
+
+void vApplicationIdleHook( void )
+{
+volatile size_t xFreeHeapSpace;
+
+	/* This is just a trivial example of an idle hook.  It is called on each
+	cycle of the idle task.  It must *NOT* attempt to block.  In this case the
+	idle task just queries the amount of FreeRTOS heap that remains.  See the
+	memory management section on the http://www.FreeRTOS.org web site for memory
+	management options.  If there is a lot of heap memory free then the
+	configTOTAL_HEAP_SIZE value in FreeRTOSConfig.h can be reduced to free up
+	RAM. */
+	xFreeHeapSpace = xPortGetFreeHeapSize();
+
+	/* Remove compiler warning about xFreeHeapSpace being set but never used. */
+	( void ) xFreeHeapSpace;
+}
+/*-----------------------------------------------------------*/
+
+void vApplicationTickHook( void )
+{
+	#if mainCREATE_SIMPLE_BLINKY_DEMO_ONLY == 0
+	{
+		//extern void vFullDemoTickHook( void );
+
+		//vFullDemoTickHook();
+	}
+	#endif
+}
+/*-----------------------------------------------------------*/
+
+static void prvClearBSS( void )
+{
+#ifdef __GNUC__
+	/* The GCC start up files seem to be missing code to clear the BSS, so it
+	is done manually here. */
+	extern uint32_t __bss_start__[];
+	extern uint32_t __bss_end__[];
+	size_t xSize;
+
+	/* Zero out bss. */
+	xSize = ( ( size_t ) __bss_end__ ) - ( ( size_t ) __bss_start__ );
+	memset( ( void * ) __bss_start__, 0x00, xSize );
+#endif /* __GNUC__ */
+}
+
 /* End user code. Do not edit comment generated here */

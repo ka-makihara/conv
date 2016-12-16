@@ -1,6 +1,6 @@
 /***************************************************************/
 /*                                                             */
-/*      PROJECT NAME :  App_Test                               */
+/*      PROJECT NAME :  RTOS_RZT1                              */
 /*      FILE         :  typedefine.h                           */
 /*      DESCRIPTION  :  Aliases of Integer Type                */
 /*      CPU SERIES   :  RZ/T                                   */
@@ -30,5 +30,3 @@ typedef unsigned long long _UQWORD;
 typedef unsigned char uint8_t;
 typedef unsigned short uint16_t;
 typedef unsigned int uint32_t;
-typedef char int8_t;
-typedef short int16_t;

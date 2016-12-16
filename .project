@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>App_Test</name>
+	<name>RTOS_RZT1</name>
 	<comment></comment>
 	<projects>
-		<project>WmPrLib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -25,4 +24,58 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>RTOS_Source</name>
+			<type>2</type>
+			<location>F:/develop/freeRTOS/FreeRTOSv9.0.0/FreeRTOS/Source</location>
+		</link>
+	</linkedResources>
+	<filteredResources>
+		<filter>
+			<id>0</id>
+			<name>System</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-GCC</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1481611613427</id>
+			<name>RTOS_Source/portable</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-GCC</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1481611613442</id>
+			<name>RTOS_Source/portable</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-MemMang</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1481611579356</id>
+			<name>RTOS_Source/portable/GCC</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-ARM_CRx_No_GIC</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1481611632459</id>
+			<name>RTOS_Source/portable/MemMang</name>
+			<type>5</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-heap_4.c</arguments>
+			</matcher>
+		</filter>
+	</filteredResources>
 </projectDescription>

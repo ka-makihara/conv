@@ -80,7 +80,7 @@ Exported global variables and functions (to be accessed by other files)
 Private variables and functions
 *******************************************************************************/
 
-
+#if 0
 /*******************************************************************************
 * Function Name : R_CPG_WriteEnable
 * Description   : Enables writing to the registers related to CPG function.
@@ -122,6 +122,7 @@ void R_CPG_WriteDisable(void)
 /*******************************************************************************
  End of function R_CPG_WriteDisable
 *******************************************************************************/
+#endif
 
 /*******************************************************************************
 * Function Name : R_CPG_PLL_Wait

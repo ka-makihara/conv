@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file declares interrupt handlers.
-* Creation Date: 2016/12/08
+* Creation Date: 2016/12/16
 ***********************************************************************************************************************/
 #ifndef INTERRUPT_HANDLERS_H
 #define INTERRUPT_HANDLERS_H
@@ -46,11 +46,11 @@ Global functions
 /* FIQ exception handler */
 void r_fiq_handler(void) __attribute__((interrupt ("FIQ")));
 
+/* ICU IRQ12 */
+void r_icu_irq12_interrupt(void) __attribute__((interrupt ("IRQ")));
+
 /* CMT CMI0 */
 void r_cmt_cmi0_interrupt(void) __attribute__((interrupt ("IRQ")));
-
-/* CMTW CMWI0 */
-void r_cmtw_cmwi0_interrupt(void) __attribute__((interrupt ("IRQ")));
 
 /* CMTW CMWI1 */
 void r_cmtw_cmwi1_interrupt(void) __attribute__((interrupt ("IRQ")));
@@ -91,6 +91,18 @@ void r_rspi1_error_interrupt(void) __attribute__((interrupt ("IRQ")));
 /* RSPI1 SPII1 */
 void r_rspi1_idle_interrupt(void) __attribute__((interrupt ("IRQ")));
 
+/* RSPI2 SPTI2 */
+void r_rspi2_transmit_interrupt(void) __attribute__((interrupt ("IRQ")));
+
+/* RSPI2 SPRI2 */
+void r_rspi2_receive_interrupt(void) __attribute__((interrupt ("IRQ")));
+
+/* RSPI2 SPEI2 */
+void r_rspi2_error_interrupt(void) __attribute__((interrupt ("IRQ")));
+
+/* RSPI2 SPII2 */
+void r_rspi2_idle_interrupt(void) __attribute__((interrupt ("IRQ")));
+
 /* SCIFA TXIF0 */
 void r_scifa0_txif0_interrupt(void) __attribute__((interrupt ("IRQ")));
 
@@ -102,6 +114,30 @@ void r_scifa0_rxif0_interrupt(void) __attribute__((interrupt ("IRQ")));
 
 /* SCIFA BRIF0 */
 void r_scifa0_brif0_interrupt(void) __attribute__((interrupt ("IRQ")));
+
+/* SCIFA TXIF1 */
+void r_scifa1_txif1_interrupt(void) __attribute__((interrupt ("IRQ")));
+
+/* SCIFA DRIF1 */
+void r_scifa1_drif1_interrupt(void) __attribute__((interrupt ("IRQ")));
+
+/* SCIFA RXIF1 */
+void r_scifa1_rxif1_interrupt(void) __attribute__((interrupt ("IRQ")));
+
+/* SCIFA BRIF1 */
+void r_scifa1_brif1_interrupt(void) __attribute__((interrupt ("IRQ")));
+
+/* SCIFA TXIF2 */
+void r_scifa2_txif2_interrupt(void) __attribute__((interrupt ("IRQ")));
+
+/* SCIFA DRIF2 */
+void r_scifa2_drif2_interrupt(void) __attribute__((interrupt ("IRQ")));
+
+/* SCIFA RXIF2 */
+void r_scifa2_rxif2_interrupt(void) __attribute__((interrupt ("IRQ")));
+
+/* SCIFA BRIF2 */
+void r_scifa2_brif2_interrupt(void) __attribute__((interrupt ("IRQ")));
 
 
 #endif

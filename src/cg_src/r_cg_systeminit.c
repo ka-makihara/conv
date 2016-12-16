@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file implements system initializing function.
-* Creation Date: 2016/12/08
+* Creation Date: 2016/12/16
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -37,6 +37,7 @@ Includes
 ***********************************************************************************************************************/
 #include "r_cg_macrodriver.h"
 #include "r_cg_cgc.h"
+#include "r_cg_icu.h"
 #include "r_cg_port.h"
 #include "r_cg_cmt.h"
 #include "r_cg_cmtw.h"
@@ -80,13 +81,16 @@ void R_Systeminit(void)
     /* Set peripheral settings */
     R_MPC_Create();
     R_CGC_Create();
+    R_ICU_Create();
     R_PORT_Create();
     R_CMT0_Create();
-    R_CMTW0_Create();
     R_CMTW1_Create();
     R_SCIFA0_Create();
+    R_SCIFA1_Create();
+    R_SCIFA2_Create();
     R_RSPI0_Create();
     R_RSPI1_Create();
+    R_RSPI2_Create();
 
     /* Disable writing to MPC pin function control registers */
     MPC.PWPR.BIT.PFSWE = 0U;    

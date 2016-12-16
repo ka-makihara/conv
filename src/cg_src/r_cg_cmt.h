@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file implements device driver for CMT module.
-* Creation Date: 2016/12/08
+* Creation Date: 2016/12/16
 ***********************************************************************************************************************/
 #ifndef CMT_H
 #define CMT_H
@@ -84,7 +84,7 @@ Macro definitions (Register bit)
 Macro definitions
 ***********************************************************************************************************************/
 /* Compare Match Timer Constant Register (CMCOR) */
-#define _CMT0_CMCOR_VALUE                    (0x3937U)
+#define _CMT0_CMCOR_VALUE                    (0x000EU)
 
 /***********************************************************************************************************************
 Typedef definitions

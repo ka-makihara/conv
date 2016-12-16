@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file implements device driver for CMTW module.
-* Creation Date: 2016/12/08
+* Creation Date: 2016/12/16
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -47,44 +47,8 @@ Global variables and functions
 /* Start user code for global. Do not edit comment generated here */
 unsigned long __ticks;
 
-unsigned long get_tick(void)
-{
-	return __ticks;
-}
-
-void waitMs(int ms)
-{
-	unsigned long tc = get_tick();
-
-	while(1){
-		unsigned long tt = get_tick();
-		if( tt - tc >= ms){
-			break;
-		}
-	}
-}
 /* End user code. Do not edit comment generated here */
 
-/***********************************************************************************************************************
-* Function Name: r_cmtw_cmwi0_interrupt
-* Description  : This function is CMWI0 interrupt service routine.
-* Arguments    : None
-* Return Value : None
-***********************************************************************************************************************/
-void r_cmtw_cmwi0_interrupt(void)
-{
-    /* Clear the interrupt source */
-    VIC.PIC0.LONG = 0x02000000UL;
-
-    /* Start user code. Do not edit comment generated here */
-    //PORTN.PODR.BIT.B6 ^= 1;
-
-    /* End user code. Do not edit comment generated here */
-
-    /* Dummy write */
-    VIC.HVA0.LONG = 0x00000000UL;
-    asm("dmb");
-}
 /***********************************************************************************************************************
 * Function Name: r_cmtw_cmwi1_interrupt
 * Description  : This function is CMWI1 interrupt service routine.
@@ -97,9 +61,7 @@ void r_cmtw_cmwi1_interrupt(void)
     VIC.PIC0.LONG = 0x40000000UL;
 
     /* Start user code. Do not edit comment generated here */
-    //PORTN.PODR.BIT.B7 ^= 1;
     __ticks++;
-
     /* End user code. Do not edit comment generated here */
 
     /* Dummy write */
@@ -180,4 +142,20 @@ void r_cmtw_oc1i1_interrupt(void)
 }
 
 /* Start user code for adding. Do not edit comment generated here */
+unsigned long get_tick(void)
+{
+	return __ticks;
+}
+
+void waitMs(int ms)
+{
+	unsigned long tc = get_tick();
+
+	while(1){
+		unsigned long tt = get_tick();
+		if( tt - tc >= ms){
+			break;
+		}
+	}
+}
 /* End user code. Do not edit comment generated here */

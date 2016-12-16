@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file implements device driver for RSPI module.
-* Creation Date: 2016/12/08
+* Creation Date: 2016/12/16
 ***********************************************************************************************************************/
 #ifndef RSPI_H
 #define RSPI_H
@@ -255,6 +255,7 @@ Macro definitions
 ***********************************************************************************************************************/
 #define _RSPI0_DIVISOR                       (0x4AU)
 #define _RSPI1_DIVISOR                       (0x4AU)
+#define _RSPI2_DIVISOR                       (0x4AU)
 
 /***********************************************************************************************************************
 Typedef definitions
@@ -277,6 +278,13 @@ MD_STATUS R_RSPI1_Send_Receive(const uint32_t * tx_buf, uint16_t tx_num, uint32_
 void r_rspi1_callback_transmitend(void);
 void r_rspi1_callback_receiveend(void);
 void r_rspi1_callback_error(uint8_t err_type);
+void R_RSPI2_Create(void);
+void R_RSPI2_Start(void);
+void R_RSPI2_Stop(void);
+MD_STATUS R_RSPI2_Send_Receive(const uint32_t * tx_buf, uint16_t tx_num, uint32_t * rx_buf);
+void r_rspi2_callback_transmitend(void);
+void r_rspi2_callback_receiveend(void);
+void r_rspi2_callback_error(uint8_t err_type);
 
 /* Start user code for function. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */

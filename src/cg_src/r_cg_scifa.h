@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : This file implements device driver for SCIF module.
-* Creation Date: 2016/12/08
+* Creation Date: 2016/12/16
 ***********************************************************************************************************************/
 #ifndef SCIF_H
 #define SCIF_H
@@ -242,6 +242,10 @@ Macro definitions
 ***********************************************************************************************************************/
 #define _SCIF_1BIT_INTERVAL_0                   (0x0000007DUL) /* Wait time for 1-bit interval */
 #define _SCIF_RX_TRIG_NUM_0                     (0x01U) /* Receive FIFO data trigger number */
+#define _SCIF_1BIT_INTERVAL_1                   (0x00000105UL) /* Wait time for 1-bit interval */
+#define _SCIF_RX_TRIG_NUM_1                     (0x01U) /* Receive FIFO data trigger number */
+#define _SCIF_1BIT_INTERVAL_2                   (0x00000105UL) /* Wait time for 1-bit interval */
+#define _SCIF_RX_TRIG_NUM_2                     (0x01U) /* Receive FIFO data trigger number */
 
 /***********************************************************************************************************************
 Typedef definitions
@@ -264,8 +268,23 @@ MD_STATUS R_SCIFA0_Serial_Receive(uint8_t * rx_buf, uint16_t rx_num);
 void r_scifa0_callback_transmitend(void);
 void r_scifa0_callback_receiveend(void);
 void r_scifa0_callback_error(scif_error_type_t error_type);
+void R_SCIFA1_Create(void);
+void R_SCIFA1_Start(void);
+void R_SCIFA1_Stop(void);
+MD_STATUS R_SCIFA1_Serial_Send(const uint8_t * tx_buf, uint16_t tx_num);
+MD_STATUS R_SCIFA1_Serial_Receive(uint8_t * rx_buf, uint16_t rx_num);
+void r_scifa1_callback_transmitend(void);
+void r_scifa1_callback_receiveend(void);
+void r_scifa1_callback_error(scif_error_type_t error_type);
+void R_SCIFA2_Create(void);
+void R_SCIFA2_Start(void);
+void R_SCIFA2_Stop(void);
+MD_STATUS R_SCIFA2_Serial_Send(const uint8_t * tx_buf, uint16_t tx_num);
+MD_STATUS R_SCIFA2_Serial_Receive(uint8_t * rx_buf, uint16_t rx_num);
+void r_scifa2_callback_transmitend(void);
+void r_scifa2_callback_receiveend(void);
+void r_scifa2_callback_error(scif_error_type_t error_type);
 
 /* Start user code for function. Do not edit comment generated here */
-extern int R_SCIFA0_Serial_SendRecv(uint8_t * tx_buf, uint16_t tx_num, uint8_t* rx_buf);
 /* End user code. Do not edit comment generated here */
 #endif

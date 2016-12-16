@@ -23,7 +23,7 @@
 * Device(s)    : R7S910018CBG
 * Tool-Chain   : GCCARM
 * Description  : Setting of port and mpc registers.
-* Creation Date: 2016/12/08
+* Creation Date: 2016/12/16
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -103,6 +103,22 @@ void R_MPC_Create(void)
     MPC.PG6PFS.BYTE |= 0x0DU;
     PORTG.PMR.BYTE |= 0x40U;
 
+    /* Set RSPCK2 pin */
+    MPC.P51PFS.BYTE |= 0x0DU;
+    PORT5.PMR.BYTE |= 0x02U;
+
+    /* Set MOSI2 pin */
+    MPC.P54PFS.BYTE |= 0x0DU;
+    PORT5.PMR.BYTE |= 0x10U;
+
+    /* Set MISO2 pin */
+    MPC.P53PFS.BYTE |= 0x0EU;
+    PORT5.PMR.BYTE |= 0x08U;
+
+    /* Set SSL20 pin */
+    MPC.P52PFS.BYTE |= 0x0EU;
+    PORT5.PMR.BYTE |= 0x04U;
+
     /* Set TXD0 pin */
     MPC.P23PFS.BYTE |= 0x0BU;
     PORT2.PMR.BYTE |= 0x08U;
@@ -111,21 +127,27 @@ void R_MPC_Create(void)
     MPC.P24PFS.BYTE |= 0x0BU;
     PORT2.PMR.BYTE |= 0x10U;
 
-    /* Set TOC0 pin */
-    MPC.PD7PFS.BYTE |= 0x1DU;
-    PORTD.PMR.BYTE |= 0x80U;
+    /* Set TXD1 pin */
+    MPC.P72PFS.BYTE |= 0x0AU;
+    PORT7.PMR.BYTE |= 0x04U;
 
-    /* Set TIC0 pin */
-    MPC.PD5PFS.BYTE |= 0x1DU;
-    PORTD.PMR.BYTE |= 0x20U;
+    /* Set RXD1 pin */
+    MPC.P73PFS.BYTE |= 0x0AU;
+    PORT7.PMR.BYTE |= 0x08U;
 
-    /* Set TOC1 pin */
-    MPC.P86PFS.BYTE |= 0x1DU;
-    PORT8.PMR.BYTE |= 0x40U;
+    /* Set TXD2 pin */
+    MPC.P91PFS.BYTE |= 0x0BU;
+    PORT9.PMR.BYTE |= 0x02U;
 
-    /* Set TIC1 pin */
-    MPC.PD6PFS.BYTE |= 0x1DU;
-    PORTD.PMR.BYTE |= 0x40U;
+    /* Set RXD2 pin */
+    MPC.P92PFS.BYTE |= 0x0BU;
+    PORT9.PMR.BYTE |= 0x04U;
+
+    /* Set IRQ12 pin */
+    MPC.P44PFS.BYTE |= 0x40U;
+    PORT4.PMR.BYTE &= 0xEFU;
+    PORT4.PDR.WORD &= 0xFEFFU;
+    PORT4.PDR.WORD |= 0x0200U;
 
     /* Set TOC2 pin */
     MPC.PF6PFS.BYTE |= 0x1DU;
